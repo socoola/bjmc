@@ -11,6 +11,9 @@ interface RewardLogDao {
     @Query("SELECT * FROM reward_log ORDER BY timestamp DESC")
     fun observeAll(): Flow<List<RewardLogEntity>>
 
+    @Query("SELECT * FROM reward_log WHERE id = :id")
+    suspend fun getById(id: Long): RewardLogEntity?
+
     @Query("SELECT * FROM reward_log ORDER BY timestamp DESC LIMIT 1")
     suspend fun getLatest(): RewardLogEntity?
 

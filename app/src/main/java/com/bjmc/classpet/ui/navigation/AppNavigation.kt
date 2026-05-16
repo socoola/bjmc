@@ -41,7 +41,7 @@ fun AppNavigation(
     onUpdateName: (String) -> Unit,
     onUpdateAppearance: (PetType, Long) -> Unit,
     onAddReward: (String, Int, String?) -> Unit,
-    onUndoLastReward: () -> Unit,
+    onUndoLastReward: (Long?) -> Unit,
     onEditPresets: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -77,7 +77,7 @@ fun AppNavigation(
             )
             2 -> RewardHistoryScreen(
                 logs = rewardLogs,
-                onUndo = onUndoLastReward,
+                onUndo = { id -> onUndoLastReward(id) },
                 modifier = Modifier.padding(padding)
             )
         }

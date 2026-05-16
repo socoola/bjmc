@@ -46,6 +46,21 @@ class PetRepository(private val db: AppDatabase) {
         petDao.updateScoreAndStage(newScore, stageToKeep)
     }
 
+    suspend fun deleteRewardLog(id: Long) {
+        val log = rewardLogDao.getById(id) ?: return
+        rewardLogDao.deleteById(id)
+        val pet = getPet() ?: return
+        val newScore = (pet.totalScore - log.score).coerceAtLeast(0)
+        val currentStage = GrowthStage.fromScore(newScore)
+        val storedStage = GrowthStage.valueOf(pet.stage)
+        val stageToKeep = if (storedStage.ordinal > currentStage.ordinal) {
+            storedStage.name
+        } else {
+            currentStage.name
+        }
+        petDao.updateScoreAndStage(newScore, stageToKeep)
+    }
+
     suspend fun initDefaultPresetsIfEmpty() {
         if (presetRewardDao.count() == 0) {
             presetRewardDao.upsertAll(defaultPresets)

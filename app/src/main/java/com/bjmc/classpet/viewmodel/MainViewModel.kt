@@ -69,9 +69,10 @@ class MainViewModel(private val repository: PetRepository) : ViewModel() {
     fun addReward(label: String, score: Int, note: String? = null) {
         viewModelScope.launch {
             val oldStage = currentStage
+            val oldScore = pet.value?.totalScore ?: 0
             repository.addReward(label, score, note)
             _rewardEvent.emit(score)
-            val newScore = pet.value?.totalScore ?: 0
+            val newScore = oldScore + score
             val newStage = GrowthCalculator.getStage(newScore)
             if (newStage.ordinal > oldStage.ordinal) {
                 _evolutionEvent.emit(newStage)
@@ -82,6 +83,12 @@ class MainViewModel(private val repository: PetRepository) : ViewModel() {
     fun undoLastReward() {
         viewModelScope.launch {
             repository.undoLastReward()
+        }
+    }
+
+    fun deleteRewardLog(id: Long) {
+        viewModelScope.launch {
+            repository.deleteRewardLog(id)
         }
     }
 

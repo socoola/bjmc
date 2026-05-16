@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                 onAddReward = { label, score, note ->
                                     viewModel.addReward(label, score, note)
                                 },
-                                onUndoLastReward = { viewModel.undoLastReward() },
+                                onUndoLastReward = { id -> if (id != null) viewModel.deleteRewardLog(id) else viewModel.undoLastReward() },
                                 onEditPresets = { showPresetEditor = true },
                                 modifier = Modifier.padding(padding)
                             )

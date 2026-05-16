@@ -27,7 +27,7 @@ import java.util.Locale
 @Composable
 fun RewardHistoryScreen(
     logs: List<RewardLogEntity>,
-    onUndo: () -> Unit,
+    onUndo: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dateFormat = remember { SimpleDateFormat("MM-dd HH:mm", Locale.getDefault()) }
@@ -44,7 +44,7 @@ fun RewardHistoryScreen(
             items(logs, key = { it.id }) { log ->
                 val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = { value ->
-                        if (value == SwipeToDismissBoxValue.EndToStart) { onUndo(); true }
+                        if (value == SwipeToDismissBoxValue.EndToStart) { onUndo(log.id); true }
                         else false
                     }
                 )
