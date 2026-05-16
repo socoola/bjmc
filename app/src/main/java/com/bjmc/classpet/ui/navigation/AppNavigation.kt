@@ -42,11 +42,13 @@ fun AppNavigation(
     onUpdateAppearance: (PetType, Long) -> Unit,
     onAddReward: (String, Int, String?) -> Unit,
     onUndoLastReward: () -> Unit,
-    onEditPresets: () -> Unit
+    onEditPresets: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
+        modifier = modifier,
         bottomBar = {
             NavigationBar {
                 tabs.forEachIndexed { index, tab ->
